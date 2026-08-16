@@ -1,0 +1,129 @@
+=== Criando artista de benchmark (00000000-0000-4000-8000-000000000001) ===
+INSERT 0 1
+
+############################################
+# Escala: 10.000 eventos (com indice GiST)
+############################################
+--- Inserindo 10000 eventos sinteticos ---
+INSERT 0 10000
+
+=== EXPLAIN ANALYZE: 10k eventos, COM indice GiST ===
+                                                                                                  QUERY PLAN                                                                                                  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=101.08..101.09 rows=1 width=24) (actual time=10.105..10.110 rows=50 loops=1)
+   Buffers: shared hit=348
+   ->  Sort  (cost=101.08..101.09 rows=1 width=24) (actual time=10.104..10.107 rows=50 loops=1)
+         Sort Key: (st_distance(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, true))
+         Sort Method: top-N heapsort  Memory: 31kB
+         Buffers: shared hit=348
+         ->  Bitmap Heap Scan on events  (cost=8.30..101.07 rows=1 width=24) (actual time=7.688..10.000 rows=587 loops=1)
+               Filter: (((status)::text = ANY ('{OPEN,QUORUM_REACHED}'::text[])) AND st_dwithin(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision, true))
+               Rows Removed by Filter: 411
+               Heap Blocks: exact=214
+               Buffers: shared hit=345
+               ->  Bitmap Index Scan on "IDX_events_location_gist"  (cost=0.00..8.30 rows=5 width=0) (actual time=0.256..0.256 rows=998 loops=1)
+                     Index Cond: (location && _st_expand('0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision))
+                     Buffers: shared hit=28
+ Planning:
+   Buffers: shared hit=246
+ Planning Time: 7.448 ms
+ Execution Time: 10.299 ms
+(18 rows)
+
+
+############################################
+# Escala: 50.000 eventos (com indice GiST)
+############################################
+--- Inserindo 40000 eventos sinteticos ---
+INSERT 0 40000
+
+=== EXPLAIN ANALYZE: 50k eventos, COM indice GiST ===
+                                                                                                  QUERY PLAN                                                                                                  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=426.58..426.58 rows=1 width=24) (actual time=20.468..20.474 rows=50 loops=1)
+   Buffers: shared hit=1265
+   ->  Sort  (cost=426.58..426.58 rows=1 width=24) (actual time=20.467..20.470 rows=50 loops=1)
+         Sort Key: (st_distance(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, true))
+         Sort Method: top-N heapsort  Memory: 31kB
+         Buffers: shared hit=1265
+         ->  Bitmap Heap Scan on events  (cost=28.58..426.57 rows=1 width=24) (actual time=8.701..20.105 rows=2978 loops=1)
+               Filter: (((status)::text = ANY ('{OPEN,QUORUM_REACHED}'::text[])) AND st_dwithin(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision, true))
+               Rows Removed by Filter: 2082
+               Heap Blocks: exact=1061
+               Buffers: shared hit=1262
+               ->  Bitmap Index Scan on "IDX_events_location_gist"  (cost=0.00..28.57 rows=24 width=0) (actual time=1.632..1.633 rows=5060 loops=1)
+                     Index Cond: (location && _st_expand('0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision))
+                     Buffers: shared hit=98
+ Planning:
+   Buffers: shared hit=246
+ Planning Time: 8.144 ms
+ Execution Time: 20.695 ms
+(18 rows)
+
+
+############################################
+# Escala: 100.000 eventos (com indice GiST)
+############################################
+--- Inserindo 50000 eventos sinteticos ---
+INSERT 0 50000
+
+=== EXPLAIN ANALYZE: 100k eventos, COM indice GiST ===
+                                                                                                  QUERY PLAN                                                                                                  
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=824.40..824.40 rows=1 width=24) (actual time=34.697..34.704 rows=50 loops=1)
+   Buffers: shared hit=2395
+   ->  Sort  (cost=824.40..824.40 rows=1 width=24) (actual time=34.695..34.699 rows=50 loops=1)
+         Sort Key: (st_distance(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, true))
+         Sort Method: top-N heapsort  Memory: 31kB
+         Buffers: shared hit=2395
+         ->  Bitmap Heap Scan on events  (cost=56.75..824.39 rows=1 width=24) (actual time=9.872..33.995 rows=6024 loops=1)
+               Filter: (((status)::text = ANY ('{OPEN,QUORUM_REACHED}'::text[])) AND st_dwithin(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision, true))
+               Rows Removed by Filter: 4075
+               Heap Blocks: exact=2117
+               Buffers: shared hit=2392
+               ->  Bitmap Index Scan on "IDX_events_location_gist"  (cost=0.00..56.75 rows=47 width=0) (actual time=2.378..2.379 rows=10099 loops=1)
+                     Index Cond: (location && _st_expand('0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision))
+                     Buffers: shared hit=172
+ Planning:
+   Buffers: shared hit=246
+ Planning Time: 8.012 ms
+ Execution Time: 34.924 ms
+(18 rows)
+
+
+############################################
+# 100.000 eventos, SEM indice GiST (removido temporariamente)
+############################################
+DROP INDEX
+
+=== EXPLAIN ANALYZE: 100k eventos, SEM indice GiST ===
+                                                                                                     QUERY PLAN                                                                                                     
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=22727.35..22727.36 rows=1 width=24) (actual time=101.183..105.538 rows=50 loops=1)
+   Buffers: shared hit=2668
+   ->  Sort  (cost=22727.35..22727.36 rows=1 width=24) (actual time=101.182..105.534 rows=50 loops=1)
+         Sort Key: (st_distance(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, true))
+         Sort Method: top-N heapsort  Memory: 31kB
+         Buffers: shared hit=2668
+         ->  Gather  (cost=1000.00..22727.34 rows=1 width=24) (actual time=7.952..104.825 rows=6024 loops=1)
+               Workers Planned: 1
+               Workers Launched: 1
+               Buffers: shared hit=2665
+               ->  Parallel Seq Scan on events  (cost=0.00..21727.24 rows=1 width=24) (actual time=7.578..93.307 rows=3012 loops=2)
+                     Filter: (((status)::text = ANY ('{OPEN,QUORUM_REACHED}'::text[])) AND st_dwithin(location, '0101000020E61000000000000000804AC000000000000033C0'::geography, '500000'::double precision, true))
+                     Rows Removed by Filter: 46988
+                     Buffers: shared hit=2665
+ Planning:
+   Buffers: shared hit=205 dirtied=1
+ Planning Time: 7.924 ms
+ Execution Time: 105.594 ms
+(18 rows)
+
+
+=== Recriando indice GiST ===
+CREATE INDEX
+
+=== Limpando dados sinteticos ===
+DELETE 100000
+DELETE 1
+=== Benchmark concluido ===

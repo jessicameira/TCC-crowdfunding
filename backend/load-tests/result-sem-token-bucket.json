@@ -1,0 +1,12 @@
+{
+  "total_requests": 8066,
+  "throughput_rps": 402.30449876495004,
+  "accepted_201": 300,
+  "duplicate_409": 7766,
+  "rate_limited_429": 0,
+  "other_status": 0,
+  "http_req_duration_avg_ms": 123.91042044916948,
+  "http_req_duration_max_ms": 582.077903,
+  "http_req_duration_p95_ms": 160.03007424999998,
+  "http_req_failed_rate": 0
+}

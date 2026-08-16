@@ -1,0 +1,12 @@
+{
+  "total_requests": 14325,
+  "throughput_rps": 714.7569491407628,
+  "accepted_201": 248,
+  "duplicate_409": 252,
+  "rate_limited_429": 13825,
+  "other_status": 0,
+  "http_req_duration_avg_ms": 69.70932455511343,
+  "http_req_duration_max_ms": 1744.983052,
+  "http_req_duration_p95_ms": 79.2867198,
+  "http_req_failed_rate": 0
+}
