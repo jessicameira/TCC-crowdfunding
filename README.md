@@ -6,7 +6,7 @@ eventos culturais só são confirmados — e só então geram cobrança — depo
 mínimo de interessados, aplicando o modelo all-or-nothing de crowdfunding à viabilização de eventos
 locais. A monografia completa, com a fundamentação teórica, a metodologia e a avaliação
 experimental (Token Bucket, PostGIS/GiST, controle de concorrência), está disponível em:
-[LINK DA MONOGRAFIA].
+[[MONOGRAFIA]](https://github.com/jessicameira/TCC-crowdfunding/blob/main/monografia.md).
 
 Status atual: protótipo completo, cobrindo da fundação (Docker, PostgreSQL/PostGIS, Redis) até a
 avaliação experimental (testes de carga e concorrência com k6, comparando o sistema com e sem
