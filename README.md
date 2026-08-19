@@ -1,7 +1,7 @@
 # Plataforma de Viabilização Coletiva de Eventos Culturais
 
 Este projeto foi desenvolvido como parte do Trabalho de Conclusão de Curso (TCC) de Engenharia de
-Software de Jessica Leandro de Meira e Allan Christian Krainski Ferrari: uma plataforma onde
+Software de Jessica Leandro de Meira, orientadada por Allan Christian Krainski Ferrari: uma plataforma onde
 eventos culturais só são confirmados — e só então geram cobrança — depois de atingirem um quórum
 mínimo de interessados, aplicando o modelo all-or-nothing de crowdfunding à viabilização de eventos
 locais. A monografia completa, com a fundamentação teórica, a metodologia e a avaliação
